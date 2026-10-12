@@ -3,6 +3,7 @@
 #include <QTextStream>
 #include <QStringList>
 #include <QDebug>
+#include <QHash>
 
 
 //constructeur qui initialise la matrice avec des valeurs par défaut
@@ -62,6 +63,13 @@ void Fonctions::chargerVilles(QString nomFichier) {
 
 //La fontion chargerTemps lit les liaisons entre les villes et remplit la matrice de temps
 void Fonctions::chargerTemps(QString nomFichier) {
+    // temps.csv référence les villes par leur city_id, alors que la matrice et
+    // l'interface utilisent la position de la ville dans listeVilles
+    QHash<int, int> indiceParId;
+    for (int i = 0; i < listeVilles.size(); ++i) {
+        indiceParId.insert(listeVilles[i].getId(), i);
+    }
+
     QFile fichier(nomFichier);
     if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream flux(&fichier);
@@ -72,9 +80,11 @@ void Fonctions::chargerTemps(QString nomFichier) {
                 int idA = colonnes[0].toInt();
                 int idB = colonnes[1].toInt();
                 double t = colonnes[2].toDouble();
-                if (idA < 100 && idB < 100) {
-                    matriceDeTemps[idA][idB] = t;
-                    matriceDeTemps[idB][idA] = t;
+                if (indiceParId.contains(idA) && indiceParId.contains(idB)) {
+                    int a = indiceParId.value(idA);
+                    int b = indiceParId.value(idB);
+                    matriceDeTemps[a][b] = t;
+                    matriceDeTemps[b][a] = t;
                 }
             }
         }

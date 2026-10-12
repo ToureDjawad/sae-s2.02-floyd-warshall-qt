@@ -4,6 +4,8 @@ Application Qt 6 en C++ qui calcule les temps de trajet minimaux entre des ville
 
 **Auteur :** Djawad TOURE ISSAHOU
 
+![Capture de l'application : trajet Paris-Marseille, ordre de visite, dépôt recommandé et tableau des distances](docs/capture.png)
+
 ## Fonctionnement
 
 1. `chargerVilles()` lit `data/villes.csv` et construit la liste des villes.
@@ -20,6 +22,10 @@ Application Qt 6 en C++ qui calcule les temps de trajet minimaux entre des ville
 | `fonctions.h` / `fonctions.cpp` | Chargement des données et algorithmes |
 | `mainwindow.h` / `mainwindow.cpp` | Interface Qt |
 | `data/` | Villes et temps de trajet au format CSV |
+
+## Correctif après le rendu
+
+`temps.csv` identifie les villes par leur `city_id`, alors que l'interface utilise leur position dans `villes.csv`. Les temps affichés correspondaient donc à d'autres villes (Toulouse-Rennes en 2h). `chargerTemps()` convertit maintenant chaque `city_id` en position avant de remplir la matrice.
 
 ## Limites connues
 
