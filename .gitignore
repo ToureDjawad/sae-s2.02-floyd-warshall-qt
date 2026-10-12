@@ -1,0 +1,7 @@
+build/
+*.o
+moc_*
+*.pro.user
+.qmake.stash
+Makefile
+TempsDeRoute
